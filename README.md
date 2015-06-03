@@ -1,17 +1,14 @@
-golang.mk
-=========
+# golang.mk
 
 Common Makefile rules for building and testing Golang applications.
 
 Also features support for dependencies and a package index.
 
-Why golang.mk?
---------------
+## Why golang.mk?
 
 This project was inspired by the awsome [erlang.mk](https://github.com/ninenines/erlang.mk) project.
 
-Usage
------
+## Usage
 
 Add the file `golang.mk` to your project, then use the following base
 Makefile:
@@ -27,5 +24,16 @@ Then run
 ```
 make
 make help
+```
+
+## Start
+
+```
+mkdir my_project
+cd my_project
+wget https://raw.githubusercontent.com/glejeune/golang.mk/master/golang.mk
+make -f golang.mk
+make -f golang.mk bootstrap
+make
 ```
 
