@@ -22,12 +22,12 @@
 
 define make_install_path
   if [ -d $(GOPATH)/src/$(PROJECT_PATH) ] ; then \
-    @rm -rf $(GOPATH)/src/$(PROJECT_PATH); \
+    rm -rf $(GOPATH)/src/$(PROJECT_PATH); \
   fi
 endef
 
 define install_path
-  @mkdir -p $(GOPATH)/src/$(PROJECT_PATH); \
+  mkdir -p $(GOPATH)/src/$(PROJECT_PATH); \
   cp -r . $(GOPATH)/src/$(PROJECT_PATH)
 endef
 
