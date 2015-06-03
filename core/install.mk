@@ -22,8 +22,8 @@
 
 install::
 ifdef PROJECT_PATH
-	@echo "Install app..."
+	@echo "Install app in ${GOPATH}/src/${PROJECT_PATH}"
 else
-	@
+	@echo "PROJECT_PATH undefined, skip install"
 endif
 
