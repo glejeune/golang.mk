@@ -8,6 +8,9 @@ define tmpl_Makefile
 PROJECT = $(PROJECT)
 PROJECT_PATH = github.com/$(shell whoami)/$(PROJECT)
 include golang.mk
+
+clean::
+	@rm $(PROJECT)/$(PROJECT)
 endef
 
 define tmpl_main
