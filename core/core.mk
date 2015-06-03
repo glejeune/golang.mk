@@ -49,6 +49,7 @@ clean::
 	@echo -n
 
 distclean:: clean
+	@rm -rf $(GOLANG_MK_TMP)
 
 help::
 	@printf "%s\n" \
