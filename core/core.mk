@@ -67,6 +67,7 @@ help::
 		"  clean         Delete temporary and output files from most targets" \
 		"  distclean     Delete all temporary and output files" \
 		"  help          Display this help and exit" \
+		"  golank-mk     Update golang.mk" \
 		"" \
 		"The target clean only removes files that are commonly removed." \
 		"Dependencies are left untouched." \

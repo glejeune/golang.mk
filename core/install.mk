@@ -20,9 +20,22 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+define make_install_path
+  if [ -d $(GOPATH)/src/$(PROJECT_PATH) ] ; then \
+    @rm -rf $(GOPATH)/src/$(PROJECT_PATH); \
+  fi
+endef
+
+define install_path
+  @mkdir -p $(GOPATH)/src/$(PROJECT_PATH); \
+  cp -r . $(GOPATH)/src/$(PROJECT_PATH)
+endef
+
 install::
 ifdef PROJECT_PATH
 	@echo "Install app in ${GOPATH}/src/${PROJECT_PATH}"
+	@$(call make_install_path)
+	@$(call install_path)
 else
 	@echo "PROJECT_PATH undefined, skip install"
 endif
