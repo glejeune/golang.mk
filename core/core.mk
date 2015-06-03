@@ -99,7 +99,7 @@ GOLANG_MK_BUILD_DIR ?= .golang.mk.build
 GO_SOURCES ?= $(wildcard **/*.go)
 
 golang-mk:
-	git clone https://github.com/emedia-project/golang.mk $(GOLANG_MK_BUILD_DIR)
+	git clone https://github.com/glejeune/golang.mk $(GOLANG_MK_BUILD_DIR)
 	if [ -f $(GOLANG_MK_BUILD_CONFIG) ]; then cp $(GOLANG_MK_BUILD_CONFIG) $(GOLANG_MK_BUILD_DIR); fi
 	cd $(GOLANG_MK_BUILD_DIR) && $(MAKE)
 	cp $(GOLANG_MK_BUILD_DIR)/golang.mk ./golang.mk
