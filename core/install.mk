@@ -22,7 +22,7 @@
 
 .PHONY: install
 
-define make_install_path
+define clean_install_path
   if [ -d $(GOPATH)/src/$(PROJECT_PATH) ] ; then \
     rm -rf $(GOPATH)/src/$(PROJECT_PATH); \
   fi
@@ -36,9 +36,14 @@ endef
 install::
 ifdef PROJECT_PATH
 	@echo "Install app in ${GOPATH}/src/${PROJECT_PATH}"
-	@$(call make_install_path)
+	@$(call clean_install_path)
 	@$(call install_path)
 else
 	@echo "PROJECT_PATH undefined, skip install"
+endif
+
+distclean::
+ifdef PROJECT_PATH
+	@$(call clean_install_path)
 endif
 
