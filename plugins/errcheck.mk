@@ -20,25 +20,15 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-.PHONY: install
+.PHONY: errcheck
 
-define make_install_path
-  if [ -d $(GOPATH)/src/$(PROJECT_PATH) ] ; then \
-    rm -rf $(GOPATH)/src/$(PROJECT_PATH); \
-  fi
-endef
+help::
+	@printf "%s\n" "" \
+		"  errcheck           run go tool errcheck on packages"
 
-define install_path
-  mkdir -p $(GOPATH)/src/$(PROJECT_PATH); \
-  cp -r . $(GOPATH)/src/$(PROJECT_PATH)
-endef
+errcheck: install_go_errcheck
+	@errcheck ./...
 
-install::
-ifdef PROJECT_PATH
-	@echo "Install app in ${GOPATH}/src/${PROJECT_PATH}"
-	@$(call make_install_path)
-	@$(call install_path)
-else
-	@echo "PROJECT_PATH undefined, skip install"
-endif
+install_go_errcheck:
+	@go get github.com/kisielk/errcheck
 
