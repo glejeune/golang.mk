@@ -31,4 +31,6 @@ golang-mk:
 	rm -rf $(GOLANG_MK_BUILD_DIR)
 
 .PHONY: bootstrap
-bootstrap: ;
+bootstrap: golang-mk
+	@make --no-print-directory -f golang.mk bootstrap
+

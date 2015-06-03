@@ -32,7 +32,6 @@ make help
 mkdir my_project
 cd my_project
 wget https://raw.githubusercontent.com/glejeune/golang.mk/master/golang.mk
-make -f golang.mk
 make -f golang.mk bootstrap
 make
 ```
