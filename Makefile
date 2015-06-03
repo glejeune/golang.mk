@@ -40,3 +40,4 @@ else
 check:
 	$(MAKE) -C test pkg-$(p)
 endif
+

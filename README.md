@@ -22,3 +22,10 @@ PROJECT_PATH = github.com/my_username/my_project
 include golang.mk
 ```
 
+Then run
+
+```
+make
+make help
+```
+
