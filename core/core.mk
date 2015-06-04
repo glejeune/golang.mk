@@ -35,6 +35,10 @@ PROJECT_MAIN := $(strip $(PROJECT_MAIN))
 V ?= 0
 Q ?= 0
 
+# Other options
+
+DISABLE_FMT ?= 0
+
 # Temporary files directory.
 
 GOLANG_MK_TMP ?= $(CURDIR)/.golang.mk

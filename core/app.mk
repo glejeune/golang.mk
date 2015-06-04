@@ -20,7 +20,11 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-app:: fmt install deps
+.PHONY: pre-app do-app post-app pre-fmt fmt post-fmt pre-install install post-install pre-deps deps post-deps
+
+app:: pre-app do-app post-app
+
+do-app: pre-fmt fmt post-fmt pre-install install post-install pre-deps deps post-deps
 ifeq ($(wildcard $(PROJECT_MAIN)/$(PROJECT_MAIN).go),$(PROJECT_MAIN)/$(PROJECT_MAIN).go)
 	@$(call console_info,"Build app (main: $(PROJECT_MAIN)/$(PROJECT_MAIN).go).")
 	@cd $(PROJECT_MAIN) && go build $(PROJECT_MAIN).go
@@ -43,5 +47,27 @@ else
 endif
 
 fmt:
+ifeq ($(DISABLE_FMT),0)
+	@$(call console_debug,"Run fmt")
 	@if [ -n "$$(go fmt ./...)" ]; then echo 'Please run go fmt on your code.' && exit 1; fi
+else
+	@$(call console_debug,"WARNING, fmt disabled")
+endif
+
+pre-fmt::
+
+post-fmt::
+
+pre-install::
+
+post-install::
+
+pre-deps::
+
+post-deps::
+
+pre-app::
+
+post-app::
+
 
