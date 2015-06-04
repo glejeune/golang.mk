@@ -1,3 +1,4 @@
 ext
-test/hello/hello
+test/hello
 *.swp
+*.SAVE
