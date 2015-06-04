@@ -30,7 +30,7 @@ GOLANG_MK_VERSION := master
 .PHONY: all check
 
 all:
-	awk 'FNR==1 && NR!=1{print ""}1' $(patsubst %,%.mk,$(BUILD_CONFIG)) \
+	@awk 'FNR==1 && NR!=1{print ""}1' $(patsubst %,%.mk,$(BUILD_CONFIG)) \
 		| sed 's/^GOLANG_MK_VERSION = .*/GOLANG_MK_VERSION = $(GOLANG_MK_VERSION)/' > $(GOLANG_MK)
 
 ifeq ($(p),)

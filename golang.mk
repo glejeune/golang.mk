@@ -24,11 +24,13 @@ GOLANG_MK_BUILD_CONFIG ?= build.config
 GOLANG_MK_BUILD_DIR ?= .erlang.mk.build
 
 golang-mk:
-	git clone https://github.com/glejeune/golang.mk $(GOLANG_MK_BUILD_DIR)
-	if [ -f $(GOLANG_MK_BUILD_CONFIG) ]; then cp $(GOLANG_MK_BUILD_CONFIG) $(GOLANG_MK_BUILD_DIR); fi
-	cd $(GOLANG_MK_BUILD_DIR) && $(MAKE)
-	cp $(GOLANG_MK_BUILD_DIR)/golang.mk ./golang.mk
-	rm -rf $(GOLANG_MK_BUILD_DIR)
+	@echo -n "Update golang.mk."
+	@git clone https://github.com/glejeune/golang.mk $(GOLANG_MK_BUILD_DIR) --quiet
+	@if [ -f $(GOLANG_MK_BUILD_CONFIG) ]; then cp $(GOLANG_MK_BUILD_CONFIG) $(GOLANG_MK_BUILD_DIR); fi
+	@cd $(GOLANG_MK_BUILD_DIR) && $(MAKE) --no-print-directory
+	@cp $(GOLANG_MK_BUILD_DIR)/golang.mk ./golang.mk
+	@rm -rf $(GOLANG_MK_BUILD_DIR)
+	@echo "ok"
 
 .PHONY: bootstrap
 bootstrap: golang-mk
