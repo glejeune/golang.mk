@@ -34,9 +34,6 @@ PROJECT := $(strip $(PROJECT))
 
 V ?= 0
 
-gen_verbose_0 = @echo " GEN   " $@;
-gen_verbose = $(gen_verbose_$(V))
-
 # Temporary files directory.
 
 GOLANG_MK_TMP ?= $(CURDIR)/.golang.mk
@@ -93,6 +90,19 @@ endif
 define mk_tmp
   @mkdir -p $(GOLANG_MK_TMP)
 endef
+
+define console_info
+  @echo $(1)
+endef
+
+ifeq ($V,1)
+define console_debug
+  @echo $(1)
+endef
+else
+define console_debug
+endef
+endif
 
 # Automated update.
 

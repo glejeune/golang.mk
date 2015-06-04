@@ -35,15 +35,22 @@ endef
 
 install::
 ifdef PROJECT_PATH
-	@echo "Install app in ${GOPATH}/src/${PROJECT_PATH}"
+ifneq (${GOPATH}/src/${PROJECT_PATH},$(shell pwd))
+	@$(call console_info,"Install app.")
+	@$(call console_debug,"Install PATH: ${GOPATH}/src/${PROJECT_PATH}")
 	@$(call clean_install_path)
 	@$(call install_path)
 else
-	@echo "PROJECT_PATH undefined, skip install"
+	@$(call console_debug,"skip install: all done")
+endif
+else
+	@$(call console_debug,"PROJECT_PATH undefined, skip install")
 endif
 
 distclean::
 ifdef PROJECT_PATH
+ifneq (${GOPATH}/src/${PROJECT_PATH},$(shell pwd))
 	@$(call clean_install_path)
+endif
 endif
 
