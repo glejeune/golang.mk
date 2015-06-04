@@ -72,7 +72,7 @@ help::
 		"The target clean only removes files that are commonly removed." \
 		"Dependencies are left untouched." \
 		"" \
-		"Setting V=1 when calling $(MAKE) enables verbose mode."
+		"Setting V=1 when calling $(MAKE) enables verbose mode." \
 		"Setting Q=1 when calling $(MAKE) in quiet mode."
 
 # Core functions.
