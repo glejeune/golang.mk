@@ -92,12 +92,12 @@ define mk_tmp
 endef
 
 define console_info
-  @echo $(1)
+  @echo "INFO: $(1)"
 endef
 
 ifeq ($V,1)
 define console_debug
-  @echo $(1)
+  @echo "DEBUG: $(1)"
 endef
 else
 define console_debug

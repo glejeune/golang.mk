@@ -60,8 +60,9 @@ func main() {\n \
 		}\n \
 	}\n \
 	for p, _ := range pkgs {\n \
-	  fmt.Printf(\"CHECK %%s\\\\n\", p)\n \
-	  out, _ := exec.Command(\"go\", \"get\", stripchars(p, \"\\\\\"\")).Output()\n \
+	  pk := stripchars(p, \"\\\\\"\")\n \
+	  fmt.Printf(\"INFO: check %%s\\\\n\", pk)\n \
+	  out, _ := exec.Command(\"go\", \"get\", pk).Output()\n \
 		if len(out) > 0 {\n \
 		  fmt.Printf(\"  !! %%s\\\\n\", out)\n \
 	  }\n \
