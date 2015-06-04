@@ -27,8 +27,8 @@ GO_VERSION = $(shell go version 2>/dev/null)
 
 # Core configuration.
 
-PROJECT ?= $(notdir $(CURDIR))
-PROJECT := $(strip $(PROJECT))
+PROJECT_MAIN ?= $(notdir $(CURDIR))
+PROJECT_MAIN := $(strip $(PROJECT_MAIN))
 
 # Verbosity.
 
@@ -92,12 +92,12 @@ define mk_tmp
 endef
 
 define console_info
-  @echo "INFO: $(1)"
+  @echo "INFO: "$(1)
 endef
 
 ifeq ($V,1)
 define console_debug
-  @echo "DEBUG: $(1)"
+  @echo "DEBUG: "$(1)
 endef
 else
 define console_debug

@@ -21,8 +21,15 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 app:: fmt install deps
-	@$(call console_info,"Build app.")
-	@cd $(PROJECT) && go build $(PROJECT).go
+ifeq ($(wildcard $(PROJECT_MAIN)/$(PROJECT_MAIN).go),$(PROJECT_MAIN)/$(PROJECT_MAIN).go)
+	@$(call console_info,"Build app (main: $(PROJECT_MAIN)/$(PROJECT_MAIN).go).")
+	@cd $(PROJECT_MAIN) && go build $(PROJECT_MAIN).go
+else ifeq ($(wildcard $(PROJECT_MAIN).go),$(PROJECT_MAIN).go)
+	@$(call console_info,"Build app (main: $(PROJECT_MAIN).go).")
+	@go build $(PROJECT_MAIN).go
+else
+	@$(call console_debug,"$(PROJECT_MAIN).go not found")
+endif
 
 fmt:
 	@if [ -n "$$(go fmt ./...)" ]; then echo 'Please run go fmt on your code.' && exit 1; fi

@@ -23,33 +23,33 @@
 .PHONY: install
 
 define clean_install_path
-  if [ -d $(GOPATH)/src/$(PROJECT_PATH) ] ; then \
-    rm -rf $(GOPATH)/src/$(PROJECT_PATH); \
+  if [ -d $(GOPATH)/src/$(PROJECT_MODULE) ] ; then \
+    rm -rf $(GOPATH)/src/$(PROJECT_MODULE); \
   fi
 endef
 
 define install_path
-  mkdir -p $(GOPATH)/src/$(PROJECT_PATH); \
-  cp -r . $(GOPATH)/src/$(PROJECT_PATH)
+  mkdir -p $(GOPATH)/src/$(PROJECT_MODULE); \
+  cp -r . $(GOPATH)/src/$(PROJECT_MODULE)
 endef
 
 install::
-ifdef PROJECT_PATH
-ifneq (${GOPATH}/src/${PROJECT_PATH},$(shell pwd))
+ifdef PROJECT_MODULE
+ifneq (${GOPATH}/src/${PROJECT_MODULE},$(shell pwd))
 	@$(call console_info,"Install app.")
-	@$(call console_debug,"Install PATH: ${GOPATH}/src/${PROJECT_PATH}")
+	@$(call console_debug,"Install PATH: ${GOPATH}/src/${PROJECT_MODULE}")
 	@$(call clean_install_path)
 	@$(call install_path)
 else
 	@$(call console_debug,"skip install: all done")
 endif
 else
-	@$(call console_debug,"PROJECT_PATH undefined, skip install")
+	@$(call console_debug,"PROJECT_MODULE undefined, skip install")
 endif
 
 distclean::
-ifdef PROJECT_PATH
-ifneq (${GOPATH}/src/${PROJECT_PATH},$(shell pwd))
+ifdef PROJECT_MODULE
+ifneq (${GOPATH}/src/${PROJECT_MODULE},$(shell pwd))
 	@$(call clean_install_path)
 endif
 endif

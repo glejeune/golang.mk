@@ -5,12 +5,12 @@ help::
 		"  bootstrap          Generate a skeleton of an application"
 
 define tmpl_Makefile
-PROJECT = $(PROJECT)
-PROJECT_PATH = github.com/$(shell whoami)/$(PROJECT)
+PROJECT_MAIN = $(PROJECT_MAIN)
+PROJECT_MODULE = github.com/$(shell whoami)/$(PROJECT_MAIN)
 include golang.mk
 
 clean::
-	@rm $(PROJECT)/$(PROJECT)
+	@rm $(PROJECT_MAIN)/$(PROJECT_MAIN)
 endef
 
 define tmpl_main
@@ -33,12 +33,12 @@ endef
 $(foreach template,$(filter tmpl_%,$(.VARIABLES)),$(eval export $(template)))
 
 bootstrap:
-ifneq ($(wildcard $(PROJECT)/),)
-	@$(call console_info,"$(PROJECT)/ directory already exists")
+ifneq ($(wildcard $(PROJECT_MAIN)/),)
+	@$(call console_info,"$(PROJECT_MAIN)/ directory already exists")
 else
 	@$(call console_info,"Generate bootstrap")
-	@mkdir $(PROJECT)
+	@mkdir $(PROJECT_MAIN)
 	@$(call render_template,tmpl_Makefile,Makefile)
-	@$(call render_template,tmpl_main,$(PROJECT)/$(PROJECT).go)
+	@$(call render_template,tmpl_main,$(PROJECT_MAIN)/$(PROJECT_MAIN).go)
 endif
 

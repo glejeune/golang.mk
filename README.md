@@ -14,8 +14,8 @@ Add the file `golang.mk` to your project, then use the following base
 Makefile:
 
 ``` Makefile
-PROJECT = my_project
-PROJECT_PATH = github.com/my_username/my_project
+PROJECT_MAIN = my_project
+PROJECT_MODULE = github.com/my_username/my_project
 include golang.mk
 ```
 

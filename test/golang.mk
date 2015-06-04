@@ -27,8 +27,8 @@ GO_VERSION = $(shell go version 2>/dev/null)
 
 # Core configuration.
 
-PROJECT ?= $(notdir $(CURDIR))
-PROJECT := $(strip $(PROJECT))
+PROJECT_MAIN ?= $(notdir $(CURDIR))
+PROJECT_MAIN := $(strip $(PROJECT_MAIN))
 
 # Verbosity.
 
@@ -39,7 +39,7 @@ V ?= 0
 GOLANG_MK_TMP ?= $(CURDIR)/.golang.mk
 export GOLANG_MK_TMP
 
-all:: deps
+all::
 	@$(MAKE) --no-print-directory app
 
 clean::
@@ -92,12 +92,12 @@ define mk_tmp
 endef
 
 define console_info
-  @echo $(1)
+  @echo "INFO: "$(1)
 endef
 
 ifeq ($V,1)
 define console_debug
-  @echo $(1)
+  @echo "DEBUG: "$(1)
 endef
 else
 define console_debug
@@ -111,11 +111,13 @@ GOLANG_MK_BUILD_DIR ?= .golang.mk.build
 GO_SOURCES ?= $(wildcard **/*.go)
 
 golang-mk:
-	git clone https://github.com/glejeune/golang.mk $(GOLANG_MK_BUILD_DIR)
-	if [ -f $(GOLANG_MK_BUILD_CONFIG) ]; then cp $(GOLANG_MK_BUILD_CONFIG) $(GOLANG_MK_BUILD_DIR); fi
-	cd $(GOLANG_MK_BUILD_DIR) && $(MAKE)
-	cp $(GOLANG_MK_BUILD_DIR)/golang.mk ./golang.mk
-	rm -rf $(GOLANG_MK_BUILD_DIR)
+	@echo -n "Update golang.mk."
+	@git clone https://github.com/glejeune/golang.mk $(GOLANG_MK_BUILD_DIR) --quiet
+	@if [ -f $(GOLANG_MK_BUILD_CONFIG) ]; then cp $(GOLANG_MK_BUILD_CONFIG) $(GOLANG_MK_BUILD_DIR); fi
+	@cd $(GOLANG_MK_BUILD_DIR) && $(MAKE) --no-print-directory
+	@cp $(GOLANG_MK_BUILD_DIR)/golang.mk ./golang.mk
+	@rm -rf $(GOLANG_MK_BUILD_DIR)
+	@echo "ok"
 
 
 # Copyright (c) 2015, Gregoire Lejeune
@@ -180,8 +182,9 @@ func main() {\n \
 		}\n \
 	}\n \
 	for p, _ := range pkgs {\n \
-	  fmt.Printf(\"CHECK %%s\\\\n\", p)\n \
-	  out, _ := exec.Command(\"go\", \"get\", stripchars(p, \"\\\\\"\")).Output()\n \
+	  pk := stripchars(p, \"\\\\\"\")\n \
+	  fmt.Printf(\"INFO: check %%s\\\\n\", pk)\n \
+	  out, _ := exec.Command(\"go\", \"get\", pk).Output()\n \
 		if len(out) > 0 {\n \
 		  fmt.Printf(\"  !! %%s\\\\n\", out)\n \
 	  }\n \
@@ -223,9 +226,16 @@ get-deps::
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-app:: fmt install
-	@$(call console_info,"Build app.")
-	@cd $(PROJECT) && go build $(PROJECT).go
+app:: fmt install deps
+ifeq ($(wildcard $(PROJECT_MAIN)/$(PROJECT_MAIN).go),$(PROJECT_MAIN)/$(PROJECT_MAIN).go)
+	@$(call console_info,"Build app (main: $(PROJECT_MAIN)/$(PROJECT_MAIN).go).")
+	@cd $(PROJECT_MAIN) && go build $(PROJECT_MAIN).go
+else ifeq ($(wildcard $(PROJECT_MAIN).go),$(PROJECT_MAIN).go)
+	@$(call console_info,"Build app (main: $(PROJECT_MAIN).go).")
+	@go build $(PROJECT_MAIN).go
+else
+	@$(call console_debug,"$(PROJECT_MAIN).go not found")
+endif
 
 fmt:
 	@if [ -n "$$(go fmt ./...)" ]; then echo 'Please run go fmt on your code.' && exit 1; fi
@@ -256,33 +266,33 @@ fmt:
 .PHONY: install
 
 define clean_install_path
-  if [ -d $(GOPATH)/src/$(PROJECT_PATH) ] ; then \
-    rm -rf $(GOPATH)/src/$(PROJECT_PATH); \
+  if [ -d $(GOPATH)/src/$(PROJECT_MODULE) ] ; then \
+    rm -rf $(GOPATH)/src/$(PROJECT_MODULE); \
   fi
 endef
 
 define install_path
-  mkdir -p $(GOPATH)/src/$(PROJECT_PATH); \
-  cp -r . $(GOPATH)/src/$(PROJECT_PATH)
+  mkdir -p $(GOPATH)/src/$(PROJECT_MODULE); \
+  cp -r . $(GOPATH)/src/$(PROJECT_MODULE)
 endef
 
 install::
-ifdef PROJECT_PATH
-ifneq (${GOPATH}/src/${PROJECT_PATH},$(shell pwd))
+ifdef PROJECT_MODULE
+ifneq (${GOPATH}/src/${PROJECT_MODULE},$(shell pwd))
 	@$(call console_info,"Install app.")
-	@$(call console_debug,"Install PATH: ${GOPATH}/src/${PROJECT_PATH}")
+	@$(call console_debug,"Install PATH: ${GOPATH}/src/${PROJECT_MODULE}")
 	@$(call clean_install_path)
 	@$(call install_path)
 else
 	@$(call console_debug,"skip install: all done")
 endif
 else
-	@$(call console_debug,"PROJECT_PATH undefined, skip install")
+	@$(call console_debug,"PROJECT_MODULE undefined, skip install")
 endif
 
 distclean::
-ifdef PROJECT_PATH
-ifneq (${GOPATH}/src/${PROJECT_PATH},$(shell pwd))
+ifdef PROJECT_MODULE
+ifneq (${GOPATH}/src/${PROJECT_MODULE},$(shell pwd))
 	@$(call clean_install_path)
 endif
 endif
@@ -295,12 +305,12 @@ help::
 		"  bootstrap          Generate a skeleton of an application"
 
 define tmpl_Makefile
-PROJECT = $(PROJECT)
-PROJECT_PATH = github.com/$(shell whoami)/$(PROJECT)
+PROJECT_MAIN = $(PROJECT_MAIN)
+PROJECT_MODULE = github.com/$(shell whoami)/$(PROJECT_MAIN)
 include golang.mk
 
 clean::
-	@rm $(PROJECT)/$(PROJECT)
+	@rm $(PROJECT_MAIN)/$(PROJECT_MAIN)
 endef
 
 define tmpl_main
@@ -316,18 +326,21 @@ func main() {
 endef
 
 define render_template
+  @$(call console_debug,"Generate $(2)")
 	@echo "$${$(1)}" > $(2)
 endef
 
 $(foreach template,$(filter tmpl_%,$(.VARIABLES)),$(eval export $(template)))
 
 bootstrap:
-ifneq ($(wildcard $(PROJECT)/),)
-	$(error Error: $(PROJECT)/ directory already exists)
+ifneq ($(wildcard $(PROJECT_MAIN)/),)
+	@$(call console_info,"$(PROJECT_MAIN)/ directory already exists")
+else
+	@$(call console_info,"Generate bootstrap")
+	@mkdir $(PROJECT_MAIN)
+	@$(call render_template,tmpl_Makefile,Makefile)
+	@$(call render_template,tmpl_main,$(PROJECT_MAIN)/$(PROJECT_MAIN).go)
 endif
-	@mkdir $(PROJECT)
-	$(call render_template,tmpl_Makefile,Makefile)
-	$(call render_template,tmpl_main,$(PROJECT)/$(PROJECT).go)
 
 
 # Copyright (c) 2015, Gregoire Lejeune
