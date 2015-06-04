@@ -26,7 +26,7 @@ func main() {
 endef
 
 define render_template
-  @$(call console_debug,"Generate $(2)"); \
+  @$(call console_debug,"Generate $(2)")
 	@echo "$${$(1)}" > $(2)
 endef
 
