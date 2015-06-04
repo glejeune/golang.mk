@@ -432,7 +432,7 @@ A golang project generated with [golang.mk](https://github.com/glejeune/golang.m
 
 ## Contributing
 
-1. Fork it ( https://github.com/nexkap/kafe/fork )
+1. Fork it ( https://github.com/$(shell whoami)/$(PROJECT_MAIN)/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
