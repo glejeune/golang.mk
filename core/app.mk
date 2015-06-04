@@ -31,6 +31,17 @@ else
 	@$(call console_debug,"$(PROJECT_MAIN).go not found")
 endif
 
+run:: install deps
+ifeq ($(wildcard $(PROJECT_MAIN)/$(PROJECT_MAIN).go),$(PROJECT_MAIN)/$(PROJECT_MAIN).go)
+	@$(call console_info,"Build app (main: $(PROJECT_MAIN)/$(PROJECT_MAIN).go).")
+	@cd $(PROJECT_MAIN) && go run $(PROJECT_MAIN).go $(ARGS)
+else ifeq ($(wildcard $(PROJECT_MAIN).go),$(PROJECT_MAIN).go)
+	@$(call console_info,"Build app (main: $(PROJECT_MAIN).go).")
+	@go run $(PROJECT_MAIN).go $(ARGS)
+else
+	@$(call console_debug,"$(PROJECT_MAIN).go not found")
+endif
+
 fmt:
 	@if [ -n "$$(go fmt ./...)" ]; then echo 'Please run go fmt on your code.' && exit 1; fi
 

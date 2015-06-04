@@ -64,6 +64,7 @@ help::
 		"  tests         Run the tests for this project" \
 		"  clean         Delete temporary and output files from most targets" \
 		"  distclean     Delete all temporary and output files" \
+		"  run           Run the project (like go run...). Use ARGS for arguments." \
 		"  help          Display this help and exit" \
 		"  golank-mk     Update golang.mk" \
 		"" \
