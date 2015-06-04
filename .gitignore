@@ -2,3 +2,4 @@ ext
 test/hello
 *.swp
 *.SAVE
+test/.golang.mk
