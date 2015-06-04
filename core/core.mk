@@ -108,7 +108,7 @@ endif
 
 GOLANG_MK_BUILD_CONFIG ?= build.config
 GOLANG_MK_BUILD_DIR ?= .golang.mk.build
-GO_SOURCES ?= $(wildcard **/*.go)
+GO_SOURCES ?= $(wildcard **/*.go) $(wildcard *.go)
 
 golang-mk:
 	@echo -n "Update golang.mk."
