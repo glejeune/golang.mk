@@ -33,6 +33,7 @@ PROJECT_MAIN := $(strip $(PROJECT_MAIN))
 # Verbosity.
 
 V ?= 0
+Q ?= 0
 
 # Temporary files directory.
 
@@ -72,6 +73,7 @@ help::
 		"Dependencies are left untouched." \
 		"" \
 		"Setting V=1 when calling $(MAKE) enables verbose mode."
+		"Setting Q=1 when calling $(MAKE) in quiet mode."
 
 # Core functions.
 
@@ -92,15 +94,21 @@ define mk_tmp
   @mkdir -p $(GOLANG_MK_TMP)
 endef
 
+ifeq ($Q,0)
 define console_info
   @echo "INFO: "$(1)
 endef
-
 ifeq ($V,1)
 define console_debug
   @echo "DEBUG: "$(1)
 endef
 else
+define console_debug
+endef
+endif
+else
+define console_info
+endef
 define console_debug
 endef
 endif
