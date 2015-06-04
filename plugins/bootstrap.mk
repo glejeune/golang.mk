@@ -26,6 +26,7 @@ func main() {
 endef
 
 define render_template
+  @$(call console_debug,"Generate $(2)"); \
 	@echo "$${$(1)}" > $(2)
 endef
 
@@ -33,9 +34,11 @@ $(foreach template,$(filter tmpl_%,$(.VARIABLES)),$(eval export $(template)))
 
 bootstrap:
 ifneq ($(wildcard $(PROJECT)/),)
-	$(error Error: $(PROJECT)/ directory already exists)
-endif
+	@$(call console_info,"$(PROJECT)/ directory already exists")
+else
+	@$(call console_info,"Generate bootstrap")
 	@mkdir $(PROJECT)
-	$(call render_template,tmpl_Makefile,Makefile)
-	$(call render_template,tmpl_main,$(PROJECT)/$(PROJECT).go)
+	@$(call render_template,tmpl_Makefile,Makefile)
+	@$(call render_template,tmpl_main,$(PROJECT)/$(PROJECT).go)
+endif
 
