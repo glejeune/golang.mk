@@ -20,7 +20,7 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-app:: fmt install
+app:: fmt install deps
 	@$(call console_info,"Build app.")
 	@cd $(PROJECT) && go build $(PROJECT).go
 

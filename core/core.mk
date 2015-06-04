@@ -39,7 +39,7 @@ V ?= 0
 GOLANG_MK_TMP ?= $(CURDIR)/.golang.mk
 export GOLANG_MK_TMP
 
-all:: deps
+all::
 	@$(MAKE) --no-print-directory app
 
 clean::
