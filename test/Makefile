@@ -1,7 +1,6 @@
-PROJECT_MAIN = hello
-PROJECT_MODULE = github.com/glejeune/hello
+PROJECT_MAIN = test
+PROJECT_MODULE = github.com/greg/test
 include golang.mk
 
 clean::
-	@rm -f hello/hello
-
+	@rm test/test

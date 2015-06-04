@@ -1,5 +1,5 @@
 ext
-test/hello/hello
+test/test/test
 *.swp
 *.SAVE
 test/.golang.mk
